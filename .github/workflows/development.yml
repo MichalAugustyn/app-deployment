@@ -4,12 +4,12 @@ name: CI for development branches
 on:
   push:
     branches:
-      - '*'
+      - '*/*'
       - '!master'
 
 jobs:
   build:
-    runs-on: centos-latest
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
 
