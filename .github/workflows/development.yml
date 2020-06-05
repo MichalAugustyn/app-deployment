@@ -4,20 +4,31 @@ name: CI for development branches
 on:
   push:
     branches:
-      - '*'
+      - '*/*'
       - '!master'
 
 jobs:
   build:
-    runs-on: centos-latest
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
+    - name: repository checkout
+      uses: actions/checkout@master
 
-    - uses: Azure/docker-login@v1
+    - name: container registry login
+      uses: Azure/docker-login@v1
       with:
         login-server: appdeployregistry.azurecr.io
         username: ${{ secrets.ACR_USER }}
         password: ${{ secrets.ACR_PASS }}
 
-    - run: docker build . -t appdeployregistry.azurecr.io/showoff:${{ github.sha }}
-    - run: docker push appdeployregistry.azurecr.io/showoff:${{ github.sha }}
+    - name: build docker image
+      run: docker build . -t appdeployregistry.azurecr.io/showoff:${{ github.sha }}
+
+    - name: scan image for security vulnerabilities
+      uses: Azure/container-scan@v0
+      with:
+        run-quality-checks: true
+        image-name: appdeployregistry.azurecr.io/showoff:${{ github.sha }}
+
+    - name: push docker image
+      run: docker push appdeployregistry.azurecr.io/showoff:${{ github.sha }}
