@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: showoff-app
+  labels:
+    app: showoff
+spec:
+  type: "LoadBalancer"
+  selector:
+    app: showoff
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 5000
