@@ -1,0 +1,30 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: showoff-app
+  labels:
+    app: showoff
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: showoff
+  template:
+    metadata:
+      labels:
+        app: showoff
+    spec:
+      containers:
+      - image: appdeployregistry.azurecr.io/showoff:latest
+        name: app-container
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 5000
+            protocol: TCP
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 5
+
+
