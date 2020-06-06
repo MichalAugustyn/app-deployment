@@ -1,0 +1,52 @@
+---
+name: CD for master branch
+
+on:
+  push:
+    branches:
+      - 'master'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: repository checkout
+      uses: actions/checkout@master
+
+    - name: container registry login
+      uses: Azure/docker-login@v1
+      with:
+        login-server: appdeployregistry.azurecr.io
+        username: "${{ secrets.ACR_USER }}"
+        password: "${{ secrets.ACR_PASS }}"
+
+    - name: build docker image
+      run: docker build . -t "appdeployregistry.azurecr.io/showoff:${{ github.run_id }}"
+
+    - name: push docker image
+      run: docker push "appdeployregistry.azurecr.io/showoff:${{ github.run_id }}"
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: repository checkout
+      uses: actions/checkout@master
+
+    - name: set kubernetes context
+      uses: azure/aks-set-context@v1
+      id: login
+      with:
+        creds: "${{ secrets.AZURE_CREDENTIALS }}"
+        resource-group: app-deploy-we
+        cluster-name: app-deploy
+
+    - name: deploy application
+      uses: Azure/k8s-deploy@v1
+      with:
+        manifests: |
+            deployment/deployment.yaml
+            deployment/service.yaml
+        images: "appdeployregistry.azurecr.io/showoff:${{ github.run_id }}"
+        kubectl-version: latest
+
