@@ -5,7 +5,6 @@ on:
   push:
     branches:
       - '*/*'
-      - '!master'
 
 jobs:
   build:
@@ -18,14 +17,14 @@ jobs:
       uses: Azure/docker-login@v1
       with:
         login-server: appdeployregistry.azurecr.io
-        username: ${{ secrets.ACR_USER }}
-        password: ${{ secrets.ACR_PASS }}
+        username: "${{ secrets.ACR_USER }}"
+        password: "${{ secrets.ACR_PASS }}"
 
     - name: build docker image
-      run: docker build . -t appdeployregistry.azurecr.io/showoff:${{ github.run_id }}
-    
+      run: docker build . -t "appdeployregistry.azurecr.io/showoff:${{ github.run_id }}"
+
     - name: push docker image
-      run: docker push appdeployregistry.azurecr.io/showoff:${{ github.run_id }}
+      run: docker push "appdeployregistry.azurecr.io/showoff:${{ github.run_id }}"
 
   deploy:
     needs: build
@@ -38,9 +37,9 @@ jobs:
       uses: azure/aks-set-context@v1
       id: login
       with:
-        creds: '${{ secrets.AZURE_CREDENTIALS }}'
-        resource-group: 'app-deploy-we'
-        cluster-name: 'app-deploy'
+        creds: "${{ secrets.AZURE_CREDENTIALS }}"
+        resource-group: app-deploy-we
+        cluster-name: app-deploy
 
     - name: deploy application
       uses: Azure/k8s-deploy@v1
@@ -48,6 +47,6 @@ jobs:
         manifests: |
             deployment/deployment.yaml
             deployment/service.yaml
-        images: appdeployregistry.azurecr.io/showoff:${{ github.run_id }}
-        kubectl-version: 'latest'
+        images: "appdeployregistry.azurecr.io/showoff:${{ github.run_id }}"
+        kubectl-version: latest
 
