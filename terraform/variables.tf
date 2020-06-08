@@ -1,6 +1,6 @@
 variable "app_tag" {
   type    = string
-  default = "v.1.0.0"
+  default = "v1.0.0"
 }
 
 variable "app_port" {

@@ -9,7 +9,7 @@ resource "azurerm_container_registry" "acr" {
 resource "azurerm_container_group" "acg" {
   name                = "showoff"
   location            = azurerm_resource_group.arg.location
-  network_profile_id  = "${azurerm_network_profile.container-np.id}"
+  network_profile_id  = azurerm_network_profile.container-np.id
   resource_group_name = azurerm_resource_group.arg.name
   ip_address_type     = "private"
   os_type             = "Linux"

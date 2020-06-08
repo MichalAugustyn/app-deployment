@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - '*/*'
+      - '*'
       - '!master'
 
 jobs:
@@ -17,18 +18,18 @@ jobs:
     - name: container registry login
       uses: Azure/docker-login@v1
       with:
-        login-server: appdeployregistry.azurecr.io
+        login-server: terraformshowoff.azurecr.io
         username: ${{ secrets.ACR_USER }}
         password: ${{ secrets.ACR_PASS }}
 
     - name: build docker image
-      run: docker build . -t appdeployregistry.azurecr.io/showoff:${{ github.sha }}
+      run: docker build . -t terraformshowoff.azurecr.io/showoff:${{ github.sha }}
 
     - name: scan image for security vulnerabilities
       uses: Azure/container-scan@v0
       with:
         run-quality-checks: true
-        image-name: appdeployregistry.azurecr.io/showoff:${{ github.sha }}
+        image-name: terraformshowoff.azurecr.io/showoff:${{ github.sha }}
 
     - name: push docker image
-      run: docker push appdeployregistry.azurecr.io/showoff:${{ github.sha }}
+      run: docker push terraformshowoff.azurecr.io/showoff:${{ github.sha }}
