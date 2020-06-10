@@ -78,7 +78,6 @@ resource "azurerm_application_gateway" "prod-gateway" {
 
   backend_address_pool {
     name = "app-backend-pool"
-    ip_addresses = [ azurerm_container_group.acg.ip_address ]
   }
 
   backend_http_settings {
@@ -103,5 +102,4 @@ resource "azurerm_application_gateway" "prod-gateway" {
     backend_address_pool_name  = "app-backend-pool"
     backend_http_settings_name = "container-http"
   }
-  depends_on = [ azurerm_container_group.acg ]
 }

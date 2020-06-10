@@ -4,24 +4,33 @@
         <title>Showoff app</title>
         <style>
             body {
-                background: linear-gradient(25deg, #d52a2b, #7039bb);
-                background-repeat: no-repeat;
-                background-attachment: fixed;
+                background: {{ background }};
+            }
+            div {
+                top: 50%; left: 50%;
+                transform: translateX(-50%) translateY(-50%);
+                position: absolute;
             }
             h1 {
+                border: dotted;
                 font-size: 5em;
                 color: white;
-                border: dotted;
                 padding: 50px;
                 text-align: center;
                 font-family: arial;
-                position: absolute;
-                top: 50%; left: 50%;
-                transform: translateX(-50%) translateY(-50%);
+            }
+            h2 {
+                font-size: 3em;
+                color: white;
+                text-align: center;
+                font-family: arial;
             }
         </style>
      </head>
      <body>
-         <h1>Welcome to DevOps Community 2020</h1>
+         <div>
+           <h1>Welcome to DevOps Community 2020</h1>
+           <h2>container: {{ private_ip }} </h2>
+         <div>
      </body>
 </html>

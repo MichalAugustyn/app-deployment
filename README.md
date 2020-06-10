@@ -3,7 +3,7 @@ The application is written in Python with the help of Flask together with Gunico
 It simply does nothing but showing a hello-world-like welcome message.
 
 # Architecture overview
-![Architecture Overview](https://user-images.githubusercontent.com/19154708/84089051-48634f80-a9ee-11ea-8f82-4e5d082d5e5c.png)
+![Architecture Overview](https://user-images.githubusercontent.com/19154708/84298641-ba9f7580-ab4f-11ea-8d85-8d6dcbfaf870.png)
 
 # Docker image CI
 A new version of docker image is being prepared on each commit to any development and master branch.
